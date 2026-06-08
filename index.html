@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AQYRO — A Digital Weather Temple. Journey through clouds, storms, rain, auroras, and light. Every sky tells a different story.">
+  <meta name="keywords" content="atmosphere, clouds, weather, storms, aurora, seasons, sky, nature">
+  <meta name="author" content="AQYRO">
+  <meta property="og:title" content="AQYRO — Digital Weather Temple">
+  <meta property="og:description" content="A living exploration of Earth's atmosphere. Travel through layers of weather as a celestial ecosystem.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://aqyro.site">
+  <meta name="theme-color" content="#172030">
+  <title>AQYRO — Digital Weather Temple</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@300;400;500&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Weather Vane Navigation -->
+  <nav class="vane-nav" aria-label="Atmospheric navigation">
+    <button class="vane-trigger" id="vaneTrigger" aria-expanded="false" aria-controls="navWheel" aria-label="Open atmospheric navigation">
+      <svg class="vane-icon" viewBox="0 0 48 48" aria-hidden="true">
+        <circle cx="24" cy="24" r="22" fill="none" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+        <line class="vane-arrow" x1="24" y1="24" x2="24" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="24" cy="24" r="3" fill="currentColor"/>
+      </svg>
+    </button>
+    <div class="nav-wheel" id="navWheel" hidden>
+      <ul class="nav-wheel__list" role="list">
+        <li><a href="#cloud-gate" class="nav-wheel__link" data-weather="clouds">Clouds</a></li>
+        <li><a href="#wind-corridor" class="nav-wheel__link" data-weather="wind">Wind</a></li>
+        <li><a href="#cloud-archive" class="nav-wheel__link" data-weather="clouds">Archive</a></li>
+        <li><a href="#temple-rain" class="nav-wheel__link" data-weather="rain">Rain</a></li>
+        <li><a href="#thunder-cathedral" class="nav-wheel__link" data-weather="storms">Storms</a></li>
+        <li><a href="#seasonal-orbit" class="nav-wheel__link" data-weather="seasons">Seasons</a></li>
+        <li><a href="#aurora-chamber" class="nav-wheel__link" data-weather="aurora">Aurora</a></li>
+        <li><a href="#sky-observatory" class="nav-wheel__link" data-weather="observatory">Observatory</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main id="journey">
+
+    <!-- SECTION 1 — THE CLOUD GATE -->
+    <section id="cloud-gate" class="section section--cloud-gate" aria-label="The Cloud Gate">
+      <canvas id="cloudCanvas" class="section-canvas" aria-hidden="true"></canvas>
+      <div class="cloud-gate__content">
+        <p class="cloud-gate__whisper" aria-live="polite">Descend into the sky</p>
+      </div>
+      <div class="scroll-indicator" aria-hidden="true">
+        <span class="scroll-indicator__line"></span>
+      </div>
+    </section>
+
+    <!-- SECTION 2 — THE WIND CORRIDOR -->
+    <section id="wind-corridor" class="section section--wind" aria-label="The Wind Corridor">
+      <canvas id="windCanvas" class="section-canvas" aria-hidden="true"></canvas>
+      <div class="wind-corridor__content">
+        <p class="wind-text wind-text--1">Air remembers every path it has traveled</p>
+        <p class="wind-text wind-text--2">Pressure shapes the invisible architecture of the sky</p>
+        <p class="wind-text wind-text--3">Currents carry stories across continents</p>
+        <p class="wind-text wind-text--4">The wind does not ask permission — it simply moves</p>
+      </div>
+    </section>
+
+    <!-- SECTION 3 — THE FLOATING CLOUD ARCHIVE -->
+    <section id="cloud-archive" class="section section--archive" aria-label="The Floating Cloud Archive">
+      <div class="archive__header">
+        <h2 class="section-title">Floating Cloud Archive</h2>
+        <p class="section-subtitle">Each formation holds an atmospheric memory</p>
+      </div>
+      <div class="cloud-archive" role="list">
+        <button class="cloud-formation" data-cloud="dawn" role="listitem" aria-expanded="false">
+          <span class="cloud-formation__shape cloud-formation__shape--dawn"></span>
+          <span class="cloud-formation__label">Dawn Clouds</span>
+          <div class="cloud-formation__story" hidden>
+            <p>Soft cumulus painted in rose and gold. The first breath of daylight lifts moisture from sleeping valleys, weaving threads of warmth through the cold night air.</p>
+          </div>
+        </button>
+        <button class="cloud-formation" data-cloud="storm" role="listitem" aria-expanded="false">
+          <span class="cloud-formation__shape cloud-formation__shape--storm"></span>
+          <span class="cloud-formation__label">Storm Fronts</span>
+          <div class="cloud-formation__story" hidden>
+            <p>Towering cumulonimbus — cathedrals of charged water. A wall of darkness advancing across the plain, carrying the raw power of atmospheric convection.</p>
+          </div>
+        </button>
+        <button class="cloud-formation" data-cloud="monsoon" role="listitem" aria-expanded="false">
+          <span class="cloud-formation__shape cloud-formation__shape--monsoon"></span>
+          <span class="cloud-formation__label">Monsoon Paths</span>
+          <div class="cloud-formation__story" hidden>
+            <p>Rhythm of the tropics. Warm oceans exhale into the subcontinent, delivering life-giving rains that have shaped civilizations for millennia.</p>
+          </div>
+        </button>
+        <button class="cloud-formation" data-cloud="winter" role="listitem" aria-expanded="false">
+          <span class="cloud-formation__shape cloud-formation__shape--winter"></span>
+          <span class="cloud-formation__label">Winter Skies</span>
+          <div class="cloud-formation__story" hidden>
+            <p>Stratus layers — a gray blanket holding the earth in quiet suspension. Ice crystals drift through still air, catching what little light the low sun provides.</p>
+          </div>
+        </button>
+        <button class="cloud-formation" data-cloud="fog" role="listitem" aria-expanded="false">
+          <span class="cloud-formation__shape cloud-formation__shape--fog"></span>
+          <span class="cloud-formation__label">Ocean Fog</span>
+          <div class="cloud-formation__story" hidden>
+            <p>The sea breathes onto the shore. Cold water meets warmer air and the boundary dissolves into mystery — a world reduced to whispers and silhouettes.</p>
+          </div>
+        </button>
+        <button class="cloud-formation" data-cloud="lightning" role="listitem" aria-expanded="false">
+          <span class="cloud-formation__shape cloud-formation__shape--lightning"></span>
+          <span class="cloud-formation__label">Lightning Fields</span>
+          <div class="cloud-formation__story" hidden>
+            <p>Where the sky becomes electric. Millions of volts arc between heaven and earth in fractions of a second — nature's most violent and beautiful punctuation.</p>
+          </div>
+        </button>
+      </div>
+    </section>
+
+    <!-- SECTION 4 — THE TEMPLE OF RAIN -->
+    <section id="temple-rain" class="section section--rain" aria-label="The Temple of Rain">
+      <canvas id="rainCanvas" class="section-canvas" aria-hidden="true"></canvas>
+      <div class="rain-temple__content">
+        <h2 class="section-title section-title--light">Temple of Rain</h2>
+        <div class="rain-narratives">
+          <p class="rain-drop-text" data-delay="0">Each drop carries a memory of altitude</p>
+          <p class="rain-drop-text" data-delay="1">Streams merge into rivers of thought</p>
+          <p class="rain-drop-text" data-delay="2">The sound of falling water is the earth listening</p>
+          <p class="rain-drop-text" data-delay="3">In the temple, silence falls with the rain</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5 — THE THUNDER CATHEDRAL -->
+    <section id="thunder-cathedral" class="section section--thunder" aria-label="The Thunder Cathedral">
+      <canvas id="lightningCanvas" class="section-canvas" aria-hidden="true"></canvas>
+      <div class="thunder-cathedral__architecture">
+        <div class="cathedral-column cathedral-column--left"></div>
+        <div class="cathedral-column cathedral-column--right"></div>
+        <div class="cathedral-vault"></div>
+      </div>
+      <div class="thunder-content">
+        <h2 class="section-title section-title--flash" id="thunderTitle">Thunder Cathedral</h2>
+        <p class="thunder-reveal" id="thunderReveal1">In darkness, the sky builds monuments of charged water vapor</p>
+        <p class="thunder-reveal" id="thunderReveal2">Lightning is the atmosphere speaking in a language older than words</p>
+        <p class="thunder-reveal" id="thunderReveal3">Between flashes, the world holds its breath</p>
+      </div>
+    </section>
+
+    <!-- SECTION 6 — THE SEASONAL ORBIT -->
+    <section id="seasonal-orbit" class="section section--seasons" aria-label="The Seasonal Orbit">
+      <div class="orbit-container">
+        <div class="orbit-ring" id="orbitRing">
+          <div class="orbit-center">
+            <h2 class="section-title" id="seasonTitle">Spring Bloom</h2>
+            <p class="season-description" id="seasonDesc">Cherry blossoms drift on warming breezes. The atmosphere softens, moisture returns, and the sky dresses in pale green light.</p>
+          </div>
+          <button class="orbit-node orbit-node--spring active" data-season="spring" aria-label="Spring Bloom">
+            <span>Spring</span>
+          </button>
+          <button class="orbit-node orbit-node--summer" data-season="summer" aria-label="Summer Heat">
+            <span>Summer</span>
+          </button>
+          <button class="orbit-node orbit-node--autumn" data-season="autumn" aria-label="Autumn Drift">
+            <span>Autumn</span>
+          </button>
+          <button class="orbit-node orbit-node--winter" data-season="winter" aria-label="Winter Silence">
+            <span>Winter</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 7 — THE AURORA CHAMBER -->
+    <section id="aurora-chamber" class="section section--aurora" aria-label="The Aurora Chamber">
+      <canvas id="auroraCanvas" class="section-canvas" aria-hidden="true"></canvas>
+      <div class="aurora-content">
+        <p class="aurora-text aurora-text--1">Solar winds paint the polar night</p>
+        <p class="aurora-text aurora-text--2">Magnetic fields guide ribbons of light</p>
+        <p class="aurora-text aurora-text--3">The aurora speaks in color, not words</p>
+      </div>
+    </section>
+
+    <!-- SECTION 8 — THE SKY OBSERVATORY -->
+    <section id="sky-observatory" class="section section--observatory" aria-label="The Sky Observatory">
+      <div class="observatory-scene">
+        <div class="observatory-dome observatory-dome--main">
+          <div class="dome-glass">
+            <div class="dome-reflection"></div>
+            <div class="dome-cloud-system"></div>
+          </div>
+        </div>
+        <div class="observatory-dome observatory-dome--secondary"></div>
+        <div class="observatory-platform"></div>
+      </div>
+      <div class="observatory-content">
+        <h2 class="section-title">Sky Observatory</h2>
+        <p class="observatory-text">From above the atmosphere, cloud systems unfold like living cartography. Fronts collide. High pressure domes expand. The sky reveals its architecture to those who watch.</p>
+        <ul class="observatory-readings" aria-label="Atmospheric observations">
+          <li><span class="reading-label">Cirrus Layer</span><span class="reading-value">Drifting east at 12,000m</span></li>
+          <li><span class="reading-label">Cumulus Field</span><span class="reading-value">Building over warm waters</span></li>
+          <li><span class="reading-label">Jet Stream</span><span class="reading-value">Curving northward</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- SECTION 9 — THE EYE OF THE STORM -->
+    <section id="eye-storm" class="section section--eye" aria-label="The Eye of the Storm">
+      <canvas id="stormCanvas" class="section-canvas" aria-hidden="true"></canvas>
+      <div class="eye-center">
+        <p class="eye-text">In the center of chaos,<br>perfect stillness</p>
+        <p class="eye-subtext">Balance within the tempest</p>
+      </div>
+    </section>
+
+    <!-- SECTION 10 — THE HORIZON OF LIGHT -->
+    <section id="horizon-light" class="section section--horizon" aria-label="The Horizon of Light">
+      <canvas id="horizonCanvas" class="section-canvas" aria-hidden="true"></canvas>
+      <div class="horizon-content">
+        <h2 class="horizon-title">Every Sky Tells A Different Story</h2>
+        <div class="atmospheric-compass" id="atmCompass">
+          <div class="compass-ring compass-ring--outer"></div>
+          <div class="compass-ring compass-ring--middle"></div>
+          <div class="compass-ring compass-ring--inner"></div>
+          <div class="compass-needle"></div>
+          <span class="compass-labels">
+            <span>N</span><span>E</span><span>S</span><span>W</span>
+          </span>
+        </div>
+        <button class="enter-aqyro" id="enterAqyro">
+          <span class="enter-aqyro__text">Enter AQYRO</span>
+          <span class="enter-aqyro__rings" aria-hidden="true"></span>
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <p>AQYRO — Digital Weather Temple</p>
+    <p class="site-footer__tagline">A living exploration of Earth's atmosphere</p>
+  </footer>
+
+  <script src="js/atmosphere.js" defer></script>
+  <script src="js/main.js" defer></script>
+</body>
+</html>

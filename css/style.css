@@ -1,0 +1,991 @@
+/* ═══════════════════════════════════════════════════════════
+   AQYRO — Digital Weather Temple
+   Stormglass Palette & Atmospheric Design System
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  --storm-blue: #172030;
+  --sky-mist: #8FB7D9;
+  --cloud-white: #EDF3F8;
+  --text-dark: #1A2230;
+  --sunbreak: #E7B85A;
+  --thunder-gray: #3A4555;
+  --aurora-cyan: #4ECDC4;
+  --sunset-amber: #E8925A;
+  --rain-violet: #7B6BA8;
+
+  --font-heading: 'Cormorant Garamond', 'Fraunces', Georgia, serif;
+  --font-display: 'Fraunces', 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Inter', 'Source Sans 3', system-ui, sans-serif;
+
+  --ease-atmosphere: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-drift: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  --vane-size: 52px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text-dark);
+  background: var(--cloud-white);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* ─── Skip & Focus ─── */
+:focus-visible {
+  outline: 2px solid var(--sunbreak);
+  outline-offset: 3px;
+}
+
+/* ─── Weather Vane Navigation ─── */
+.vane-nav {
+  position: fixed;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 1000;
+}
+
+.vane-trigger {
+  width: var(--vane-size);
+  height: var(--vane-size);
+  border: none;
+  background: rgba(237, 243, 248, 0.85);
+  backdrop-filter: blur(12px);
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--storm-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 24px rgba(23, 32, 48, 0.12);
+  transition: transform 0.4s var(--ease-atmosphere), box-shadow 0.4s;
+}
+
+.vane-trigger:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 32px rgba(23, 32, 48, 0.18);
+}
+
+.vane-icon {
+  width: 36px;
+  height: 36px;
+}
+
+.vane-arrow {
+  transform-origin: 24px 24px;
+  animation: vaneShift 8s ease-in-out infinite;
+}
+
+@keyframes vaneShift {
+  0%, 100% { transform: rotate(-15deg); }
+  25% { transform: rotate(45deg); }
+  50% { transform: rotate(120deg); }
+  75% { transform: rotate(200deg); }
+}
+
+.nav-wheel {
+  position: absolute;
+  top: calc(var(--vane-size) + 0.75rem);
+  right: 0;
+  width: 220px;
+  background: rgba(23, 32, 48, 0.92);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 16px 48px rgba(23, 32, 48, 0.35);
+  animation: wheelExpand 0.4s var(--ease-atmosphere);
+}
+
+.nav-wheel[hidden] {
+  display: none;
+}
+
+@keyframes wheelExpand {
+  from { opacity: 0; transform: scale(0.85) translateY(-8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.nav-wheel__list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.nav-wheel__link {
+  display: block;
+  padding: 0.6rem 0.75rem;
+  color: var(--sky-mist);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  border-radius: 8px;
+  transition: background 0.3s, color 0.3s;
+  text-align: center;
+}
+
+.nav-wheel__link:hover,
+.nav-wheel__link:focus-visible {
+  background: rgba(143, 183, 217, 0.15);
+  color: var(--cloud-white);
+}
+
+/* ─── Section Base ─── */
+.section {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+.section-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.15;
+}
+
+.section-subtitle {
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  font-weight: 300;
+  opacity: 0.75;
+  margin-top: 0.75rem;
+}
+
+/* ═══ SECTION 1 — CLOUD GATE ═══ */
+.section--cloud-gate {
+  background: linear-gradient(180deg, #B8D4EA 0%, #D4E5F2 40%, var(--cloud-white) 100%);
+}
+
+.cloud-gate__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 15vh;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.cloud-gate__whisper {
+  font-family: var(--font-heading);
+  font-size: clamp(1.1rem, 3vw, 1.6rem);
+  font-style: italic;
+  color: var(--storm-blue);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: whisperFade 3s ease 2s forwards;
+}
+
+@keyframes whisperFade {
+  to { opacity: 0.6; transform: translateY(0); }
+}
+
+.scroll-indicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+}
+
+.scroll-indicator__line {
+  display: block;
+  width: 1px;
+  height: 48px;
+  background: linear-gradient(to bottom, transparent, var(--storm-blue));
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+  50% { opacity: 0.8; transform: scaleY(1); }
+}
+
+/* ═══ SECTION 2 — WIND CORRIDOR ═══ */
+.section--wind {
+  background: linear-gradient(135deg, var(--cloud-white) 0%, #D8E8F4 50%, var(--sky-mist) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wind-corridor__content {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  padding: 2rem;
+  width: 100%;
+}
+
+.wind-text {
+  font-family: var(--font-heading);
+  font-size: clamp(1.4rem, 4vw, 2.4rem);
+  font-weight: 400;
+  color: var(--storm-blue);
+  line-height: 1.4;
+  margin-bottom: 3rem;
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity 1.2s var(--ease-drift), transform 1.2s var(--ease-drift);
+}
+
+.wind-text.visible {
+  opacity: 0.85;
+  transform: translateX(0);
+}
+
+.wind-text--2 { transition-delay: 0.2s; }
+.wind-text--3 { transition-delay: 0.4s; }
+.wind-text--4 { transition-delay: 0.6s; }
+
+/* ═══ SECTION 3 — CLOUD ARCHIVE ═══ */
+.section--archive {
+  background: var(--cloud-white);
+  padding: 6rem 1.5rem;
+  min-height: auto;
+}
+
+.archive__header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.cloud-archive {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.cloud-formation {
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  padding: 2rem 1rem;
+  position: relative;
+  transition: transform 0.6s var(--ease-drift);
+}
+
+.cloud-formation:hover {
+  transform: translateY(-8px);
+}
+
+.cloud-formation__shape {
+  display: block;
+  width: 160px;
+  height: 80px;
+  margin: 0 auto 1.25rem;
+  border-radius: 50%;
+  position: relative;
+  animation: cloudDrift 12s ease-in-out infinite;
+}
+
+.cloud-formation__shape--dawn {
+  background: radial-gradient(ellipse at 30% 60%, #F5C6A0 0%, #E8A87C 30%, var(--sky-mist) 70%, transparent 100%);
+  box-shadow: 40px 10px 0 -5px rgba(232, 168, 124, 0.5), -30px 15px 0 -8px rgba(245, 198, 160, 0.4);
+}
+
+.cloud-formation__shape--storm {
+  background: radial-gradient(ellipse at 50% 40%, var(--thunder-gray) 0%, #2A3545 50%, #1A2230 100%);
+  box-shadow: 35px 20px 0 -10px rgba(58, 69, 85, 0.6), -25px 25px 0 -12px rgba(42, 53, 69, 0.5);
+  animation-duration: 18s;
+}
+
+.cloud-formation__shape--monsoon {
+  background: radial-gradient(ellipse at 40% 50%, var(--rain-violet) 0%, #5A7BA8 40%, var(--sky-mist) 80%);
+  box-shadow: 30px 8px 0 -5px rgba(90, 123, 168, 0.4);
+  animation-duration: 10s;
+}
+
+.cloud-formation__shape--winter {
+  background: radial-gradient(ellipse at 50% 50%, #C8D6E5 0%, #A8BDD0 50%, var(--cloud-white) 100%);
+  box-shadow: 25px 5px 0 -3px rgba(200, 214, 229, 0.5);
+  animation-duration: 20s;
+}
+
+.cloud-formation__shape--fog {
+  background: radial-gradient(ellipse at 50% 60%, rgba(143, 183, 217, 0.6) 0%, rgba(143, 183, 217, 0.2) 60%, transparent 100%);
+  width: 200px;
+  height: 60px;
+  animation-duration: 25s;
+}
+
+.cloud-formation__shape--lightning {
+  background: radial-gradient(ellipse at 50% 30%, var(--thunder-gray) 0%, var(--storm-blue) 60%);
+  box-shadow: 0 0 30px rgba(231, 184, 90, 0.3);
+  animation-duration: 6s;
+}
+
+@keyframes cloudDrift {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(15px); }
+}
+
+.cloud-formation__label {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--storm-blue);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.cloud-formation__story {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-dark);
+  opacity: 0.8;
+  max-width: 280px;
+  margin: 1rem auto 0;
+  animation: storyReveal 0.6s var(--ease-atmosphere);
+}
+
+.cloud-formation__story[hidden] {
+  display: none;
+}
+
+@keyframes storyReveal {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 0.8; transform: translateY(0); }
+}
+
+.cloud-formation[aria-expanded="true"] .cloud-formation__shape {
+  transform: scale(1.1);
+}
+
+/* ═══ SECTION 4 — TEMPLE OF RAIN ═══ */
+.section--rain {
+  background: linear-gradient(180deg, var(--thunder-gray) 0%, var(--storm-blue) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rain-temple__content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 2rem;
+  max-width: 700px;
+}
+
+.section-title--light {
+  color: var(--cloud-white);
+  margin-bottom: 3rem;
+}
+
+.rain-narratives {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.rain-drop-text {
+  font-family: var(--font-heading);
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  font-style: italic;
+  color: var(--sky-mist);
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 1s, transform 1s;
+}
+
+.rain-drop-text.visible {
+  opacity: 0.7;
+  transform: translateY(0);
+}
+
+/* ═══ SECTION 5 — THUNDER CATHEDRAL ═══ */
+.section--thunder {
+  background: var(--storm-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thunder-cathedral__architecture {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.cathedral-column {
+  position: absolute;
+  bottom: 0;
+  width: 80px;
+  height: 70%;
+  background: linear-gradient(to top, #0D1520, var(--thunder-gray));
+  opacity: 0.4;
+}
+
+.cathedral-column--left { left: 10%; }
+.cathedral-column--right { right: 10%; }
+
+.cathedral-vault {
+  position: absolute;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 40%;
+  border: 2px solid rgba(58, 69, 85, 0.3);
+  border-bottom: none;
+  border-radius: 50% 50% 0 0;
+  opacity: 0.3;
+}
+
+.thunder-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 2rem;
+  max-width: 700px;
+}
+
+.section-title--flash {
+  color: var(--cloud-white);
+  opacity: 0;
+  transition: opacity 0.15s;
+  margin-bottom: 2rem;
+}
+
+.section-title--flash.revealed {
+  opacity: 1;
+}
+
+.thunder-reveal {
+  font-family: var(--font-heading);
+  font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+  color: var(--sky-mist);
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.thunder-reveal.revealed {
+  opacity: 0.85;
+}
+
+/* ═══ SECTION 6 — SEASONAL ORBIT ═══ */
+.section--seasons {
+  background: var(--cloud-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1rem;
+  transition: background 1.5s var(--ease-atmosphere);
+}
+
+.section--seasons[data-active-season="spring"] { background: linear-gradient(135deg, #E8F5E9, #C8E6C9, var(--cloud-white)); }
+.section--seasons[data-active-season="summer"] { background: linear-gradient(135deg, #FFF8E1, #FFE082, #FFF3E0); }
+.section--seasons[data-active-season="autumn"] { background: linear-gradient(135deg, #FBE9E7, #FFCCBC, #EFEBE9); }
+.section--seasons[data-active-season="winter"] { background: linear-gradient(135deg, #E3F2FD, #BBDEFB, #ECEFF1); }
+
+.orbit-container {
+  width: min(90vw, 500px);
+  aspect-ratio: 1;
+  position: relative;
+}
+
+.orbit-ring {
+  width: 100%;
+  height: 100%;
+  border: 2px solid rgba(23, 32, 48, 0.12);
+  border-radius: 50%;
+  position: relative;
+  transition: transform 0.8s var(--ease-drift);
+}
+
+.orbit-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 60%;
+}
+
+.season-description {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  margin-top: 1rem;
+  opacity: 0.75;
+  line-height: 1.7;
+  transition: opacity 0.5s;
+}
+
+.orbit-node {
+  position: absolute;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 2px solid rgba(23, 32, 48, 0.15);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  color: var(--storm-blue);
+  transition: transform 0.4s, box-shadow 0.4s, background 0.4s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.orbit-node:hover,
+.orbit-node.active {
+  transform: scale(1.12);
+  box-shadow: 0 8px 32px rgba(23, 32, 48, 0.15);
+}
+
+.orbit-node--spring { top: -36px; left: 50%; transform: translateX(-50%); background: rgba(200, 230, 201, 0.8); }
+.orbit-node--summer { right: -36px; top: 50%; transform: translateY(-50%); background: rgba(255, 224, 130, 0.8); }
+.orbit-node--autumn { bottom: -36px; left: 50%; transform: translateX(-50%); background: rgba(255, 204, 188, 0.8); }
+.orbit-node--winter { left: -36px; top: 50%; transform: translateY(-50%); background: rgba(187, 222, 251, 0.8); }
+
+.orbit-node--spring.active,
+.orbit-node--spring:hover { transform: translateX(-50%) scale(1.12); }
+.orbit-node--summer.active,
+.orbit-node--summer:hover { transform: translateY(-50%) scale(1.12); }
+.orbit-node--autumn.active,
+.orbit-node--autumn:hover { transform: translateX(-50%) scale(1.12); }
+.orbit-node--winter.active,
+.orbit-node--winter:hover { transform: translateY(-50%) scale(1.12); }
+
+/* ═══ SECTION 7 — AURORA CHAMBER ═══ */
+.section--aurora {
+  background: #0A0E17;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.aurora-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 2rem;
+}
+
+.aurora-text {
+  font-family: var(--font-heading);
+  font-size: clamp(1.3rem, 3.5vw, 2.2rem);
+  font-weight: 400;
+  color: var(--aurora-cyan);
+  margin-bottom: 2rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1.5s, transform 1.5s;
+  text-shadow: 0 0 40px rgba(78, 205, 196, 0.3);
+}
+
+.aurora-text.visible {
+  opacity: 0.8;
+  transform: translateY(0);
+}
+
+.aurora-text--2 { transition-delay: 0.4s; color: var(--rain-violet); text-shadow: 0 0 40px rgba(123, 107, 168, 0.3); }
+.aurora-text--3 { transition-delay: 0.8s; color: var(--sunbreak); text-shadow: 0 0 40px rgba(231, 184, 90, 0.3); }
+
+/* ═══ SECTION 8 — SKY OBSERVATORY ═══ */
+.section--observatory {
+  background: linear-gradient(180deg, #1A2840 0%, var(--storm-blue) 40%, #0D1520 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1.5rem;
+  gap: 3rem;
+}
+
+.observatory-scene {
+  position: relative;
+  width: min(90vw, 600px);
+  height: 300px;
+}
+
+.observatory-dome {
+  position: absolute;
+  border-radius: 50% 50% 0 0;
+  overflow: hidden;
+}
+
+.observatory-dome--main {
+  width: 280px;
+  height: 200px;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 40px;
+  background: linear-gradient(135deg, rgba(143, 183, 217, 0.15), rgba(143, 183, 217, 0.05));
+  border: 2px solid rgba(143, 183, 217, 0.3);
+  z-index: 2;
+}
+
+.observatory-dome--secondary {
+  width: 120px;
+  height: 80px;
+  right: 15%;
+  bottom: 40px;
+  background: rgba(143, 183, 217, 0.08);
+  border: 1px solid rgba(143, 183, 217, 0.2);
+  z-index: 1;
+}
+
+.dome-glass {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.dome-reflection {
+  position: absolute;
+  top: 10%;
+  left: 15%;
+  width: 30%;
+  height: 40%;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+  border-radius: 50%;
+}
+
+.dome-cloud-system {
+  position: absolute;
+  bottom: 20%;
+  left: 10%;
+  width: 80%;
+  height: 40%;
+  background: radial-gradient(ellipse, rgba(143, 183, 217, 0.3) 0%, transparent 70%);
+  animation: domeCloudMove 20s ease-in-out infinite;
+}
+
+@keyframes domeCloudMove {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(20px); }
+}
+
+.observatory-platform {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: linear-gradient(to top, rgba(58, 69, 85, 0.6), rgba(58, 69, 85, 0.2));
+  border-radius: 4px 4px 0 0;
+}
+
+.observatory-content {
+  text-align: center;
+  max-width: 600px;
+  z-index: 2;
+}
+
+.observatory-content .section-title {
+  color: var(--cloud-white);
+  margin-bottom: 1.5rem;
+}
+
+.observatory-text {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--sky-mist);
+  opacity: 0.8;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+
+.observatory-readings {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.observatory-readings li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 1.25rem;
+  background: rgba(143, 183, 217, 0.08);
+  border-radius: 8px;
+  border: 1px solid rgba(143, 183, 217, 0.12);
+}
+
+.reading-label {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  color: var(--sunbreak);
+}
+
+.reading-value {
+  font-size: 0.85rem;
+  color: var(--sky-mist);
+  opacity: 0.7;
+}
+
+/* ═══ SECTION 9 — EYE OF THE STORM ═══ */
+.section--eye {
+  background: radial-gradient(circle at center, #1A2840 0%, var(--storm-blue) 40%, #0A0E17 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.eye-center {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 2rem;
+}
+
+.eye-text {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  color: var(--cloud-white);
+  line-height: 1.3;
+  margin-bottom: 1rem;
+}
+
+.eye-subtext {
+  font-family: var(--font-heading);
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  font-style: italic;
+  color: var(--sky-mist);
+  opacity: 0.6;
+}
+
+/* ═══ SECTION 10 — HORIZON OF LIGHT ═══ */
+.section--horizon {
+  background: linear-gradient(180deg, var(--storm-blue) 0%, #2A4060 30%, #E8925A 70%, var(--sunbreak) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.horizon-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 3rem 1.5rem;
+}
+
+.horizon-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 700;
+  color: var(--cloud-white);
+  line-height: 1.2;
+  margin-bottom: 3rem;
+  text-shadow: 0 2px 40px rgba(231, 184, 90, 0.3);
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1.5s, transform 1.5s;
+}
+
+.horizon-title.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.atmospheric-compass {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 3rem;
+  position: relative;
+  animation: compassFloat 6s ease-in-out infinite;
+}
+
+@keyframes compassFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.compass-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.compass-ring--outer { inset: 0; }
+.compass-ring--middle { inset: 15%; border-color: rgba(255, 255, 255, 0.15); }
+.compass-ring--inner { inset: 30%; border-color: rgba(231, 184, 90, 0.3); }
+
+.compass-needle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 45%;
+  background: var(--sunbreak);
+  transform-origin: bottom center;
+  transform: translate(-50%, -100%) rotate(15deg);
+  animation: needleSway 10s ease-in-out infinite;
+  box-shadow: 0 0 12px rgba(231, 184, 90, 0.5);
+}
+
+@keyframes needleSway {
+  0%, 100% { transform: translate(-50%, -100%) rotate(10deg); }
+  50% { transform: translate(-50%, -100%) rotate(25deg); }
+}
+
+.compass-labels {
+  position: absolute;
+  inset: 0;
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.1em;
+}
+
+.compass-labels span:nth-child(1) { position: absolute; top: 4px; left: 50%; transform: translateX(-50%); }
+.compass-labels span:nth-child(2) { position: absolute; right: 4px; top: 50%; transform: translateY(-50%); }
+.compass-labels span:nth-child(3) { position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); }
+.compass-labels span:nth-child(4) { position: absolute; left: 4px; top: 50%; transform: translateY(-50%); }
+
+.enter-aqyro {
+  position: relative;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  color: var(--cloud-white);
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  letter-spacing: 0.15em;
+  padding: 1rem 2.5rem;
+  cursor: pointer;
+  border-radius: 50px;
+  overflow: hidden;
+  transition: border-color 0.4s, color 0.4s, transform 0.4s;
+}
+
+.enter-aqyro:hover {
+  border-color: var(--sunbreak);
+  color: var(--sunbreak);
+  transform: scale(1.05);
+}
+
+.enter-aqyro__rings {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.enter-aqyro:hover .enter-aqyro__rings::before,
+.enter-aqyro:hover .enter-aqyro__rings::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px solid rgba(231, 184, 90, 0.4);
+  animation: ringExpand 1.5s ease-out infinite;
+}
+
+.enter-aqyro:hover .enter-aqyro__rings::after {
+  animation-delay: 0.5s;
+}
+
+@keyframes ringExpand {
+  0% { width: 100%; height: 100%; opacity: 0.6; }
+  100% { width: 250%; height: 250%; opacity: 0; }
+}
+
+/* ─── Footer ─── */
+.site-footer {
+  background: var(--storm-blue);
+  color: var(--sky-mist);
+  text-align: center;
+  padding: 2rem 1.5rem;
+  font-size: 0.85rem;
+}
+
+.site-footer__tagline {
+  opacity: 0.5;
+  margin-top: 0.5rem;
+  font-style: italic;
+  font-family: var(--font-heading);
+}
+
+/* ─── Reduced Motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .vane-nav {
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+
+  .nav-wheel {
+    width: 180px;
+  }
+
+  .wind-text {
+    margin-bottom: 2rem;
+  }
+
+  .cloud-archive {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .cathedral-column {
+    width: 40px;
+  }
+
+  .orbit-node {
+    width: 56px;
+    height: 56px;
+    font-size: 0.65rem;
+  }
+
+  .observatory-readings li {
+    flex-direction: column;
+    gap: 0.25rem;
+    text-align: center;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section--observatory {
+    flex-direction: row;
+    gap: 4rem;
+    padding: 6rem;
+  }
+
+  .observatory-scene {
+    flex-shrink: 0;
+  }
+}
